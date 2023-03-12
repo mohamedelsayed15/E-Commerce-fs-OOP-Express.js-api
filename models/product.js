@@ -86,7 +86,6 @@ module.exports = class Product {
 
                         element.price = price
                         product = element
-
                     }
                 })
 
@@ -106,8 +105,6 @@ module.exports = class Product {
                 if (!error) {
                     products = JSON.parse(content)
                 }
-
-                let product;
 
                 const filteredProducts = products.filter(element => {
 

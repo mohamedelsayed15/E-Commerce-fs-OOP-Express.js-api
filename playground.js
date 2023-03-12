@@ -1,46 +1,39 @@
+score = [[10,6,9,1],[4,8,3,15],[7,5,11,2]], k = 2
 
-var romanToInt = function (s) {//fizzbuzz like
-    let sum = 0
-    for (let i = 0; i < s.length; i++) {
-        if ((s[i] === 'C' && s[i + 1] === 'M')) { sum += 900; i++; continue }
-        if ((s[i] === 'C' && s[i + 1] === 'D')) { sum += 400; i++; continue }
-        if ((s[i] === 'X' && s[i + 1] === 'C')) { sum += 90; i++; continue }
-        if ((s[i] === 'X' && s[i + 1] === 'L')) { sum += 40; i++; continue }
-        if ((s[i] === 'I' && s[i + 1] === 'X')) { sum += 9; i++; continue }
-        if ((s[i] === 'I' && s[i + 1] === 'V')) { sum += 4; i++; continue }
-        if (s[i] === 'M') { sum += 1000 }
-        if (s[i] === 'D') { sum += 500 }
-        if (s[i] === 'C') { sum += 100 }
-        if (s[i] === 'L') { sum += 50 }
-        if (s[i] === 'X') { sum += 10 }
-        if (s[i] === 'V') { sum += 5 }
-        if (s[i] === 'I') { sum += 1 }
-    }
-    return sum
-}
-var romanToInt = function(s) {
-    const system = {
-            'I': 1,
-            'V': 5,
-            'X': 10,
-            'L': 50,
-            'C': 100,
-            'D': 500,
-            'M': 1000
+// var sortTheStudents = function (score, k) {//bubble sort
+    
+//     for (let i = 0; i < score.length; i++){
+            
+//         for(let j = 0; j < ( score.length - i -1 ); j++){
+
+//             if(score[j][k] < score[j+1][k]){
+//                 let temp = score[j]
+//                 score[j] = score[j + 1]
+//                 score[j+1] = temp
+//             }
+//         }
+//     }
+//         return score
+//         }
+//console.log(sortTheStudents(score, k))
+var sortTheStudents = function (score, k) {
+    
+    let hold;
+    for (let i = 0; i <= score.length; i++) { 
+
+        let current = score[i][k] 
+
+        if (!score[i + 1]) { break }
+        
+        let next = score[i +1][k]
+
+        if (next > current) { 
+            hold = score[i]
+            score[i] = score[i +1]
+            score[i + 1] = hold
+            i = -1//my sort X D
         }
-    
-        let sum = 0;
-    
-        for (let i = 0; i < s.length; i++) {
-            const current = system[s[i]];
-            const next = system[s[i + 1]];
-    
-            if (current < next) {
-                sum += next - current;
-                i++;
-            } else {
-                sum += current;
-            }
-        }
-        return sum;
     }
+    return score
+};
+console.log(sortTheStudents(score, k))

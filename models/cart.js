@@ -1,37 +1,64 @@
 const fs = require('fs')
 const rootDir = require('../util/path') 
 const path = require('path')
+const e = require('express')
+const { deleteProduct } = require('./product')
 const pth = path.join(rootDir, 'data', 'cart.json')
 
-module.exports = class Cart { 
+module.exports = class Cart {
 
-    static async addProduct(id,productPrice) { 
+    static async addProduct(id, productPrice) {
 
         try {
-            let carts = await fs.promises.readFile(pth)
+            let cart = await fs.promises.readFile(pth)
 
-            if (carts) { carts = JSON.parse(carts) }
+            cart = JSON.parse(cart)
 
-            let cart = { products: [], totalPrice: 0 }
-
-            const existingProduct = cart.products.findIndex(product => prod.id === id)
-
-            let updatedProduct;
-
-            if (existingProduct) {
-
-                updatedProduct = { ...existingProduct }
-
-                updatedProduct.quantity += 1
-
-            } else { 
-                updatedProduct = { id, quantity: 1 }
-                
-                cart.products = [...cart.products , updatedProduct] 
+            if (e) {
+                let cart = { products: [], totalPrice: 0 }
             }
+                const existingProductIndex = cart.products.findIndex(product => product.id === id)
 
-            cart.totalPrice += productPrice
+                const existingProduct = cart.products[existingProductIndex]
 
-        } catch (e) {console.log(e) }
+                let updatedProduct;
+
+                if (existingProduct) {
+
+                    updatedProduct = { ...existingProduct }
+
+                    updatedProduct.quantity += 1
+
+                    // Create a new copy of the products array with the updated product
+                    cart.products = [...cart.products]
+
+                    cart.products[existingProductIndex] = updatedProduct
+
+                } else {
+                    updatedProduct = { id, quantity: 1 }
+                
+                    cart.products = [...cart.products, updatedProduct]
+                }
+
+                cart.totalPrice += productPrice
+
+                fs.writeFile(pth, JSON.stringify(cart), err => { console.log(err) })
+
+            } catch (e) { console.log(e) }
+    }
+    static async deleteProduct(id, price) { 
+        let cart = await fs.promises.readFile(pth)
+
+        cart = JSON.parse(cart)
+
+        let productQuantity;
+
+        cart.products = cart.products.filter(product => { 
+
+            if (product.id !== id) { return product }
+            if (product.id === id) {productQuantity=product.quantity }
+        })
+        cart.totalPrice -= (price * productQuantity)
+        fs.writeFile(pth, JSON.stringify(cart), err => { console.log(err) })
     }
 }

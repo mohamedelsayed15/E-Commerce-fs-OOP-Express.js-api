@@ -49,8 +49,8 @@ exports.deleteProduct = (req, res) => {
 
 exports.addProduct = (req, res) => {
 
-    if ( !req.body.tittle || !req.body.description || !req.body.price || !req.body.quantity)
-    {
+    if (!req.body.tittle || !req.body.description || !req.body.price || !req.body.quantity) {
+        
         return res.send("invalid")
     }
     
@@ -59,8 +59,4 @@ exports.addProduct = (req, res) => {
     product.save()
 
     res.send(product)
-}
-
-exports.addcart = async (req, res) => { 
-    const product = await Cart.addProduct()
 }
